@@ -9,6 +9,7 @@ from model import _C
 
 import pdb
 
+
 class _ROIAlign(Function):
     @staticmethod
     def forward(ctx, input, roi, output_size, spatial_scale, sampling_ratio):
@@ -17,7 +18,8 @@ class _ROIAlign(Function):
         ctx.spatial_scale = spatial_scale
         ctx.sampling_ratio = sampling_ratio
         ctx.input_shape = input.size()
-        output = _C.roi_align_forward(input, roi, spatial_scale, output_size[0], output_size[1], sampling_ratio)
+        output = _C.roi_align_forward(
+            input, roi, spatial_scale, output_size[0], output_size[1], sampling_ratio)
         return output
 
     @staticmethod
@@ -54,6 +56,14 @@ class ROIAlign(nn.Module):
         self.sampling_ratio = sampling_ratio
 
     def forward(self, input, rois):
+        # torch.save(input, '/home/lkk/code/copyfaster/input.pt')
+        # torch.save(rois, '/home/lkk/code/copyfaster/rois.pt')
+        # torch.save(self.output_size,
+        #            '/home/lkk/code/copyfaster/output_size.pt')
+        # torch.save(self.spatial_scale,
+        #            '/home/lkk/code/copyfaster/spatial_scale.pt')
+        # torch.save(self.sampling_ratio,
+        #            '/home/lkk/code/copyfaster/sampling_ratio.pt')
         return roi_align(
             input, rois, self.output_size, self.spatial_scale, self.sampling_ratio
         )
